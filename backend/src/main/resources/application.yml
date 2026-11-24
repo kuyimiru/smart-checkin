@@ -1,0 +1,61 @@
+server:
+  port: 8080
+  address: 0.0.0.0   # 监听所有网卡，真机才能通过局域网IP访问（默认即0.0.0.0，显式写清）
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/smart_checkin?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
+    username: ${DB_USER:root}
+    password: ${DB_PASSWORD:123456}
+  # 手机拍照动辄 2~8MB，Spring 默认上限只有 1MB，会导致"上传人脸照片"直接 500
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+    default-property-inclusion: non_null
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  global-config:
+    db-config:
+      id-type: auto
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+jwt:
+  secret: ${JWT_SECRET:smart-checkin-jwt-secret-key-2026-please-change-in-production}
+  expiration: 604800000
+
+wechat:
+  app-id: ${WECHAT_APP_ID:wx84aad3272a60f0c0}
+  # 微信小程序密钥，必须通过环境变量 WECHAT_APP_SECRET 注入，不要写进仓库
+  app-secret: ${WECHAT_APP_SECRET:}
+  # 订阅消息模板ID（清单 N-01/N-02/N-03）：留空则只记日志、不下发，便于本地开发
+  template:
+    leave-request: ""   # 请假审批提醒
+    leave-result: ""    # 请假结果通知
+    unchecked: ""       # 未打卡提醒
+
+# 人脸核验（清单 C-02）：真实 1:1 人脸比对
+face:
+  # 是否启用真实比对。true=调用下方模型做比对；false=模拟模式放行（日志标注，便于无模型环境跑通流程）
+  mock-enabled: false
+  # SeetaFace6 模型目录（存放 face_detector.csta / face_recognizer.csta 等文件的目录）
+  # 留空或不填 = 退回模拟模式
+  model-path: G:/daima/dsh_work/project1/models/seetaface6/sf3.0_models
+  # 相似度阈值。<=0 时使用模型枚举自带的推荐阈值（SeetaFace6 为 0.62）
+  threshold: 0.0
+  # 原生库与模型的缓存目录（绝对路径，不能含中文/空格）
+  # 不填则用默认 C:/Users/{用户}/smartjavaai_cache；C 盘空间紧张时建议改到其他盘
+  cache-path: G:/daima/dsh_work/project1/smartjavaai_cache
+
+aes:
+  secret-key: MySecretKey2026ForSmartCheckinApp
+
+file:
+  upload-path: ./uploads
