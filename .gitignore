@@ -1,0 +1,45 @@
+# ---------- 构建产物 ----------
+target/
+build/
+out/
+*.jar
+*.war
+*.class
+
+# ---------- IDE ----------
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.claude/
+.settings/
+.project
+.classpath
+
+# ---------- 运行时数据（不提交）----------
+uploads/
+logs/
+*.log
+*.log.*
+
+# ---------- 数据库与本地配置 ----------
+*.db
+*.sqlite3
+*.sqlite
+application-local.yml
+application-prod.yml
+.env
+.env.local
+
+# ---------- 系统 ----------
+Thumbs.db
+.DS_Store
+desktop.ini
+*.tmp
+*.bak
+
+# ---------- 小程序 ----------
+miniprogram/node_modules/
+miniprogram/miniprogram_npm/
+miniprogram/project.private.config.json
