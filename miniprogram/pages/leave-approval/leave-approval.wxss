@@ -1,0 +1,97 @@
+/* ═══════════════════════════════════════════════
+   Leave Approval — 请假审批
+   ═══════════════════════════════════════════════ */
+
+page {
+  background-color: #F5F7FA;
+  background-image: linear-gradient(180deg, #E7ECFB 0%, #EFF3FB 280rpx, #F5F7FA 600rpx);
+  background-repeat: no-repeat;
+}
+
+.container { padding: 32rpx 32rpx 0; }
+
+/* ═══ 审批卡片：悬浮 + 按压反馈 ═══ */
+.lc {
+  padding: 32rpx;
+  transition: transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.lc:active {
+  transform: scale(0.99);
+  box-shadow: 0 6rpx 18rpx rgba(26, 26, 46, 0.06);
+}
+
+.lh { display: flex; justify-content: space-between; align-items: center; }
+.ainfo { display: flex; align-items: center; gap: 16rpx; }
+
+/* 渐变圆形头像 */
+.aa {
+  width: 76rpx;
+  height: 76rpx;
+  border-radius: 50%;
+  background-color: #667EEA;
+  background-image: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 10rpx 24rpx rgba(102, 126, 234, 0.28);
+}
+.aai { font-size: 30rpx; font-weight: 700; color: #fff; }
+.ad { display: flex; flex-direction: column; gap: 4rpx; }
+.an { font-size: 30rpx; font-weight: 700; color: var(--text-1); }
+.aid { font-size: 22rpx; color: var(--text-3); font-family: monospace; }
+
+/* 待审批标签：橙色呼吸 */
+.lb {
+  font-size: 22rpx;
+  font-weight: 700;
+  padding: 8rpx 20rpx;
+  border-radius: 999rpx;
+  background: rgba(255, 149, 0, 0.10);
+  color: #E08200;
+  animation: badgeBreath 2.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.ldiv { height: 1rpx; background: #F2F3F8; margin: 22rpx 0; }
+.ld { display: flex; flex-direction: column; gap: 14rpx; }
+.ldr { display: flex; justify-content: space-between; align-items: flex-start; gap: 24rpx; }
+.ldl { font-size: 26rpx; color: var(--text-3); flex-shrink: 0; }
+.ldv { font-size: 26rpx; color: var(--text-1); font-weight: 600; text-align: right; }
+
+/* ═══ 操作按钮：拒绝（淡红）/ 通过（渐变绿 + 柔光） ═══ */
+.lact { display: flex; gap: 18rpx; margin-top: 26rpx; }
+.lbtn {
+  position: relative;
+  overflow: hidden;
+  flex: 1;
+  height: 88rpx;
+  border-radius: 999rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  font-weight: 700;
+  transition: transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.lbtn:active { transform: scale(0.95); }
+.lbtn-no { background: rgba(255, 59, 48, 0.08); color: #E02A20; }
+.lbtn-no:active { background: rgba(255, 59, 48, 0.14); }
+.lbtn-ok {
+  background-color: #34C759;
+  background-image: linear-gradient(135deg, #34C759 0%, #30D158 100%);
+  color: #fff;
+  box-shadow: 0 10rpx 26rpx rgba(52, 199, 89, 0.28);
+}
+/* 通过按钮的柔和扫光 */
+.lbtn-ok::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -120%;
+  width: 60%; height: 100%;
+  background: linear-gradient(100deg, transparent 0%, rgba(255, 255, 255, 0.34) 50%, transparent 100%);
+  transform: skewX(-18deg);
+  animation: shineSweep 3.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  pointer-events: none;
+}

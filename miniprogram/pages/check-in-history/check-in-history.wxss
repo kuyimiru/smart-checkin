@@ -1,0 +1,30 @@
+/* ═══════════════════════════════════════════════
+   Check-in History — 打卡记录
+   本页 wxml 以内联样式为主，样式集中在 app.wxss + 本页
+   既有 class（.container/.card/.tag/.empty-*）
+   ═══════════════════════════════════════════════ */
+
+/* 顶部渐变薄雾 */
+page {
+  background-color: #F5F7FA;
+  background-image: linear-gradient(180deg, #E7ECFB 0%, #EFF3FB 260rpx, #F5F7FA 560rpx);
+  background-repeat: no-repeat;
+}
+
+.container { padding: 32rpx 32rpx 0; }
+
+/* 记录卡片：可展开，给到轻微弹簧按压反馈 */
+.card {
+  border-radius: 32rpx;
+  transition: transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card:active {
+  transform: scale(0.985);
+  box-shadow: 0 6rpx 18rpx rgba(26, 26, 46, 0.06);
+}
+
+.empty-state { padding: 140rpx 40rpx; }
+
+/* 加载态旋转（wxml 内联引用 spin 关键帧） */
+@keyframes spin { to { transform: rotate(360deg); } }

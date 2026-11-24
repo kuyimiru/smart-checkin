@@ -1,0 +1,61 @@
+/* ═══════════════════════════════════════════════
+   Calendar — 打卡日历
+   （日历网格/月份切换以内联样式为主，本页补齐既有 class）
+   ═══════════════════════════════════════════════ */
+
+page {
+  background-color: #F5F7FA;
+  background-image: linear-gradient(180deg, #E7ECFB 0%, #EFF3FB 280rpx, #F5F7FA 600rpx);
+  background-repeat: no-repeat;
+}
+
+.container { padding: 32rpx 32rpx 0; }
+
+/* ═══ 日期单元格：圆角 + 按压反馈 ═══ */
+.dc {
+  border-radius: 22rpx;
+  transition: background 300ms cubic-bezier(0.4, 0, 0.2, 1),
+              transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.dc:active { background: rgba(102, 126, 234, 0.08); transform: scale(0.92); }
+
+/* 选中日期：整体弹出（内联的紫色圆底随之外扩） */
+.dc-sel { animation: scaleUp 320ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+.dn {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: var(--text-1);
+  position: relative;
+  z-index: 1;
+}
+.dn-sel {
+  color: #fff;
+  font-weight: 800;
+  text-shadow: 0 2rpx 12rpx rgba(102, 126, 234, 0.55);
+}
+
+/* ═══ 当日详情行 ═══ */
+.dr {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18rpx 0;
+  border-bottom: 1rpx solid #F4F5FA;
+}
+.dr:last-child { border-bottom: none; }
+.dl-t { font-size: 28rpx; color: var(--text-3); }
+
+/* 状态胶囊：呼吸脉冲 */
+.ds-ok,
+.ds-late,
+.ds-bad {
+  padding: 6rpx 18rpx;
+  border-radius: 999rpx;
+  font-size: 24rpx;
+  font-weight: 700;
+  animation: badgeBreath 2.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+.ds-ok { background: rgba(52, 199, 89, 0.10); color: #2AA94B; }
+.ds-late { background: rgba(255, 149, 0, 0.10); color: #E08200; }
+.ds-bad { background: rgba(255, 59, 48, 0.10); color: #E02A20; }

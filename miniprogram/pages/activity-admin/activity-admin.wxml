@@ -1,0 +1,42 @@
+<view class="container">
+  <nav-back />
+  <view class="card"><text class="sec-label">数据概览</text>
+    <view class="dg">
+      <view class="di"><text class="di-emoji">👥</text><text class="di-num">{{statistics.totalMembers || 0}}</text><text class="di-lab">总人数</text></view>
+      <view class="di"><text class="di-emoji">✅</text><text class="di-num c-g">{{statistics.normalCount || 0}}</text><text class="di-lab">正常</text></view>
+      <view class="di"><text class="di-emoji">⏰</text><text class="di-num c-o">{{statistics.lateCount || 0}}</text><text class="di-lab">迟到</text></view>
+      <view class="di"><text class="di-emoji">⚠️</text><text class="di-num c-r">{{statistics.abnormalCount || 0}}</text><text class="di-lab">异常</text></view>
+      <view class="di"><text class="di-emoji">📝</text><text class="di-num c-gray">{{statistics.leaveCount || 0}}</text><text class="di-lab">请假</text></view>
+      <view class="di"><text class="di-emoji">🕐</text><text class="di-num c-b">{{statistics.uncheckedCount || 0}}</text><text class="di-lab">未打卡</text></view>
+    </view>
+  </view>
+  <view class="card"><text class="sec-label">活动管理</text>
+    <view class="ag">
+      <view class="ai" bindtap="goLeaveApproval"><text class="ai-emoji">📋</text><text class="ai-txt">请假审批</text></view>
+      <view class="ai" bindtap="goRosterImport"><text class="ai-emoji">📂</text><text class="ai-txt">花名册导入</text></view>
+      <view class="ai" bindtap="goEdit"><text class="ai-emoji">✏️</text><text class="ai-txt">编辑活动</text></view>
+      <view class="ai" bindtap="exportExcel"><text class="ai-emoji">📊</text><text class="ai-txt">导出数据</text></view>
+      <view class="ai" wx:if="{{activity.inviteEnabled}}" bindtap="disableInviteCode"><text class="ai-emoji">🔒</text><text class="ai-txt">邀请码失效</text></view>
+      <view class="ai" wx:else bindtap="enableInviteCode"><text class="ai-emoji">🔓</text><text class="ai-txt">激活邀请码</text></view>
+      <view class="ai" wx:if="{{activity.displayStatus === 'active'}}" bindtap="closeActivity"><text class="ai-emoji">⏹️</text><text class="ai-txt">关闭活动</text></view>
+    </view>
+  </view>
+  <view class="card">
+    <view class="row-between" style="margin-bottom:12rpx;"><text class="sec-label" style="margin-bottom:0;">参与者名单</text><text class="mc">{{members.length}}人</text></view>
+    <view wx:if="{{members.length === 0}}" style="text-align:center;padding:30rpx 0;color:#ccc;">暂无参与者</view>
+    <view wx:for="{{members}}" wx:key="userId" class="mr">
+      <view class="ma {{item.inRoster ? 'ma-in' : 'ma-out'}}"><text class="mai">{{item.userName ? item.userName.charAt(0) : '?'}}</text></view>
+      <view class="mi"><view class="mt"><text class="mn">{{item.userName || '未知'}}</text><text wx:if="{{!item.inRoster}}" class="mat">异常</text></view><text class="ms {{item.todayStatus}}">{{item.todayStatus === 'normal' ? '今日正常' : item.todayStatus === 'late' ? '今日迟到' : item.todayStatus === 'abnormal' ? '今日异常' : item.todayStatus === 'leave' ? '今日请假' : '未打卡'}}</text></view>
+      <view class="mid {{item.todayStatus === 'normal' ? 'mid-ok' : item.todayStatus === 'late' ? 'mid-late' : item.todayStatus === 'abnormal' ? 'mid-bad' : item.todayStatus === 'leave' ? 'mid-gray' : 'mid-none'}}"></view>
+      <view class="mrm" data-id="{{item.userId}}" data-name="{{item.userName}}" bindtap="removeMember"><text>移除</text></view>
+    </view>
+  </view>
+  <view class="card">
+    <text class="sec-label">活动信息</text>
+    <view class="ir"><text class="il">邀请码</text><text class="iv ic">{{activity.inviteCode}}</text></view>
+    <view class="ir"><text class="il">邀请码状态</text><text class="iv">{{activity.inviteEnabled ? '有效' : '已失效'}}</text></view>
+    <view class="ir"><text class="il">状态</text><text class="iv">{{activity.displayStatus === 'active' ? '进行中' : activity.displayStatus === 'pending' ? '未开始' : activity.displayStatus === 'closed' ? '已关闭' : activity.displayStatus === 'archived' ? '已归档' : '已结束'}}</text></view>
+    <view class="ir"><text class="il">日期</text><text class="iv">{{activity.startDate}} — {{activity.endDate}}</text></view>
+  </view>
+  <view class="safe-bottom"></view>
+</view>

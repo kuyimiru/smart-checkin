@@ -1,0 +1,226 @@
+<view class="page-wrapper">
+  <view class="bg-gradient"></view>
+
+  <!-- 离屏画布：用于给打卡照片叠加防伪水印（清单 C-02） -->
+  <canvas type="2d" id="wmCanvas" class="wm-canvas" style="position:fixed;left:-9999px;top:-9999px;width:300px;height:300px;"></canvas>
+
+  <!-- 导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-back" bindtap="back">
+      <view class="nav-arrow"></view>
+    </view>
+    <text class="nav-title">打卡签到</text>
+    <view class="nav-placeholder"></view>
+  </view>
+
+  <scroll-view class="page-scroll" scroll-y enhanced show-scrollbar="{{false}}">
+
+    <!-- ═══ 活动名称卡片 ═══ -->
+    <view class="glass-card activity-card">
+      <view class="activity-icon-row">
+        <view class="act-icon-box">
+          <text class="act-icon-emoji">📍</text>
+        </view>
+        <view class="act-info">
+          <text class="act-name">{{activity ? activity.name : '加载中...'}}</text>
+          <text class="act-type">
+            {{checkInType === 'location' ? '定位打卡' : checkInType === 'face' ? '人脸打卡' : '定位+人脸组合打卡'}}
+          </text>
+        </view>
+      </view>
+    </view>
+
+    <!-- ═══ 地图区域（定位/组合模式） ═══ -->
+    <view wx:if="{{checkInType === 'location' || checkInType === 'combo'}}" class="map-card {{animShake}}">
+      <map
+        id="checkinMap"
+        class="checkin-map"
+        latitude="{{mapLat}}"
+        longitude="{{mapLng}}"
+        scale="{{mapScale}}"
+        markers="{{markers}}"
+        circles="{{circles}}"
+        show-location="{{locationState === 'ready'}}"
+        bindtap="onMapTap"
+        enable-zoom="{{true}}"
+        enable-scroll="{{true}}"
+        enable-rotate="{{false}}"
+      ></map>
+
+      <!-- 定位中覆盖层 -->
+      <view wx:if="{{locationState === 'locating'}}" class="map-overlay">
+        <view class="map-skeleton"></view>
+        <view class="locating-center">
+          <view class="spinner-ring"></view>
+          <text class="locating-text">正在获取位置...</text>
+          <text class="locating-hint">请确保已开启 GPS 并授权位置权限</text>
+        </view>
+      </view>
+
+      <!-- 未定位覆盖层 -->
+      <view wx:if="{{locationState === 'idle' || locationState === 'error'}}" class="map-overlay">
+        <view class="map-skeleton"></view>
+        <view class="locating-center">
+          <view wx:if="{{locationState === 'idle'}}" class="locate-trigger" bindtap="startLocationFlow">
+            <text class="locate-trigger-icon">📍</text>
+            <text class="locate-trigger-text">点击获取当前位置</text>
+            <text class="locate-trigger-hint">需要授权位置权限以完成打卡</text>
+          </view>
+          <view wx:if="{{locationState === 'error'}}" class="locate-error-box">
+            <text class="error-emoji">⚠️</text>
+            <text class="error-msg">{{locationError}}</text>
+            <view class="error-btns">
+              <view class="err-btn err-btn-retry" bindtap="retryLocation">重新定位</view>
+              <view class="err-btn err-btn-setting" bindtap="goToSetting">打开设置</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- ═══ 距离显示区（定位成功后显示） ═══ -->
+    <view wx:if="{{(checkInType === 'location' || checkInType === 'combo') && locationState === 'ready'}}" class="distance-section {{animPulse}}">
+
+      <!-- 范围内 -->
+      <view wx:if="{{inRange}}" class="range-indicator range-ok">
+        <view class="range-dot green-dot"></view>
+        <text class="range-label">在打卡范围内</text>
+        <text class="range-emoji">✓</text>
+      </view>
+
+      <!-- 范围外 -->
+      <view wx:else class="range-indicator range-out">
+        <view class="range-dot red-dot"></view>
+        <text class="range-label">超出打卡范围</text>
+        <text class="range-emoji">⚠</text>
+      </view>
+
+      <view wx:if="{{!inRange}}" class="out-range-tip">
+        请移动到距离打卡点 {{radius}} 米范围内再打卡
+      </view>
+
+      <!-- 距离数字 -->
+      <view class="distance-display {{distanceAnimating ? 'dist-bounce' : ''}}">
+        <text class="dist-number">{{distanceText}}</text>
+        <text class="dist-unit">距 离</text>
+      </view>
+
+      <view class="radius-info">
+        <text class="radius-text">打卡范围 · 半径 {{radius}} 米</text>
+      </view>
+
+      <!-- 位置详情 -->
+      <view class="location-details">
+        <view class="loc-detail-item">
+          <view class="loc-dot user-dot"></view>
+          <text class="loc-detail-text">我的位置 · {{userLat.toFixed(6)}}, {{userLng.toFixed(6)}}</text>
+        </view>
+        <view wx:if="{{targetLat && targetLng}}" class="loc-detail-item">
+          <view class="loc-dot target-dot"></view>
+          <text class="loc-detail-text">打卡点 · {{targetLat.toFixed(6)}}, {{targetLng.toFixed(6)}}</text>
+        </view>
+      </view>
+
+      <!-- 刷新位置按钮 -->
+      <view class="refresh-loc-btn" bindtap="retryLocation">
+        <text>🔄 刷新位置</text>
+      </view>
+    </view>
+
+    <!-- ═══ 人脸打卡区 ═══ -->
+    <view wx:if="{{checkInType === 'face' || checkInType === 'combo'}}" class="face-section">
+      <view class="glass-card face-card">
+        <!-- 实时相机 + 人脸检测（真机可用；相机/接口不可用则自动降级） -->
+        <view wx:if="{{!faceImageUrl && !cameraError}}" class="face-camera-wrap">
+          <camera
+            device-position="front"
+            flash="off"
+            frame-size="medium"
+            bindinitdone="onCameraInit"
+            binderror="onCameraError"
+            class="face-camera"
+          ></camera>
+          <view class="face-guide-circle"></view>
+          <view class="face-detect-status {{faceDetected ? 'face-detected' : ''}}">
+            <text>{{faceDetected ? '✓ 已检测到人脸' : '请将面部对准取景框'}}</text>
+          </view>
+          <view class="face-shoot-btn {{faceDetected ? 'shoot-ready' : ''}}" bindtap="takePhoto">
+            <text>{{faceDetected ? '拍照打卡' : '拍照'}}</text>
+          </view>
+        </view>
+
+        <!-- 相机不可用时的降级：手动拍照；开发者工具里走"模拟取景" -->
+        <view wx:elif="{{!faceImageUrl && cameraError}}" class="face-placeholder" bindtap="takePhoto">
+          <block wx:if="{{simulatedCamera}}">
+            <view class="sim-guide-inner"></view>
+            <view class="sim-guide"></view>
+          </block>
+          <view class="face-camera-icon">
+            <text class="camera-emoji">📷</text>
+          </view>
+          <text class="face-hint">{{simulatedCamera ? '模拟取景（开发者工具无真实相机）' : '点击拍摄正面照片'}}</text>
+          <text class="face-sub-hint">{{simulatedCamera ? '点击此处选择照片，流程与真机一致' : '请确保光线充足、面部清晰'}}</text>
+          <view wx:if="{{simulatedCamera}}" class="sim-badge"><text>✓ 模拟检测到人脸</text></view>
+        </view>
+
+        <!-- 已拍照预览 -->
+        <view wx:else class="face-preview-wrap">
+          <image src="{{faceImagePreview}}" mode="aspectFill" class="face-preview" />
+          <view class="face-retake" bindtap="retakePhoto">
+            <text>重新拍摄</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- ═══ 组合打卡条件检查 ═══ -->
+    <view wx:if="{{checkInType === 'combo'}}" class="combo-requirements">
+      <view class="combo-item {{locationState === 'ready' && inRange ? 'combo-met' : 'combo-pending'}}">
+        <text>{{locationState === 'ready' && inRange ? '✓' : '○'}} 定位验证</text>
+      </view>
+      <view class="combo-item {{faceImageUrl ? 'combo-met' : 'combo-pending'}}">
+        <text>{{faceImageUrl ? '✓' : '○'}} 人脸识别</text>
+      </view>
+    </view>
+
+    <!-- ═══ 提交按钮 ═══ -->
+    <view class="submit-section">
+      <view
+        wx:if="{{!submitSuccess}}"
+        class="submit-btn {{canSubmit ? 'submit-active' : 'submit-disabled'}} {{submitting ? 'submit-loading' : ''}}"
+        bindtap="{{canSubmit && !submitting ? 'submit' : 'noop'}}">
+        <view wx:if="{{submitting}}" class="btn-loading-spinner"></view>
+        <text wx:if="{{!submitting}}" class="submit-text">
+          {{checkInType === 'face' ? (faceImageUrl ? '确认打卡' : '请先拍摄照片') :
+            (locationState === 'idle' ? '请先获取位置' :
+            locationState === 'locating' ? '正在获取位置...' :
+            locationState === 'error' ? '位置获取失败' :
+            inRange ? '确认打卡 · 距离 ' + distanceText :
+            '超出范围无法打卡')}}
+        </text>
+        <text wx:if="{{submitting}}" class="submit-text">提交中...</text>
+      </view>
+    </view>
+
+    <view class="safe-bottom"></view>
+  </scroll-view>
+
+  <!-- ═══ 打卡成功弹窗 ═══ -->
+  <view wx:if="{{submitSuccess}}" class="success-overlay">
+    <view class="success-modal {{submitSuccess ? 'success-in' : ''}}">
+      <view wx:if="{{showConfetti}}" class="confetti-container">
+        <view wx:for="{{confettiList}}" wx:key="id" class="confetti" style="left: {{item.x}}%; background-color: {{item.color}}; animation-delay: {{item.delay}}s;"></view>
+      </view>
+      <view class="success-check-wrap">
+        <view class="success-check-circle">
+          <text class="success-check-icon">✓</text>
+        </view>
+      </view>
+      <text class="success-title">打卡成功</text>
+      <text class="success-sub">已记录本次打卡信息</text>
+      <view wx:if="{{(checkInType === 'location' || checkInType === 'combo') && locationState === 'ready'}}" class="success-distance">
+        签到距离 · {{distanceText}}
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,117 @@
+<view class="login-wrapper">
+  <!-- Animated gradient background -->
+  <view class="bg-layer"></view>
+  <view class="bg-orb orb-1"></view>
+  <view class="bg-orb orb-2"></view>
+  <view class="bg-orb orb-3"></view>
+  <view class="bg-orb orb-4"></view>
+
+  <!-- Content -->
+  <view class="login-content">
+    <!-- Brand area with animated logo -->
+    <view class="brand-area">
+      <view class="logo-pulse-ring">
+        <view class="logo-pulse logo-pulse-1"></view>
+        <view class="logo-pulse logo-pulse-2"></view>
+      </view>
+      <view class="logo-ring">
+        <view class="logo-halo"></view>
+        <view class="logo-inner">
+          <view class="logo-icon">
+            <text class="logo-char">签</text>
+          </view>
+        </view>
+      </view>
+      <text class="brand-name">智能打卡</text>
+      <text class="brand-desc">Smart Check-in · 让每一次签到都简单</text>
+    </view>
+
+    <!-- Login card with glass effect -->
+    <view class="login-glass-card">
+      <!-- Welcome text -->
+      <view class="welcome-row">
+        <text class="welcome-title">欢迎回来</text>
+        <text class="welcome-sub">授权登录即可开始使用</text>
+      </view>
+
+      <!-- WeChat login button -->
+      <view
+        class="wechat-login-btn {{loading ? 'btn-loading' : ''}}"
+        bindtap="handleLogin"
+      >
+        <view class="btn-shine"></view>
+        <view wx:if="{{!loading}}" class="btn-inner">
+          <view class="wx-icon-wrap">
+            <text class="wx-icon-em">微</text>
+          </view>
+          <text class="btn-label">微信一键登录</text>
+        </view>
+        <view wx:else class="btn-inner">
+          <view class="btn-spinner"></view>
+          <text class="btn-label">登录中...</text>
+        </view>
+      </view>
+
+      <!-- Agreement -->
+      <view class="agreement-row">
+        <view class="agreement-dot {{agreed ? 'dot-checked' : ''}}" bindtap="showPrivacyPolicy">
+          <text wx:if="{{agreed}}" class="dot-check-icon">✓</text>
+        </view>
+        <text class="agreement-text">登录即代表同意</text>
+        <text class="agreement-link" bindtap="showPrivacyPolicy">《用户协议》</text>
+        <text class="agreement-text">和</text>
+        <text class="agreement-link" bindtap="openPrivacyDoc">《隐私政策》</text>
+      </view>
+    </view>
+
+    <!-- Version -->
+    <text class="version-text">v1.0.0</text>
+  </view>
+
+  <!-- Privacy dialog -->
+  <view wx:if="{{showPrivacy}}" class="dialog-overlay" catchtap="disagreePrivacy">
+    <view class="dialog-card" catchtap="noop">
+      <text class="dialog-title">隐私政策</text>
+      <scroll-view class="dialog-body" scroll-y enhanced show-scrollbar="{{false}}">
+        <text class="dialog-text">
+【智能打卡小程序 隐私政策】
+
+发布日期：2026年8月11日
+
+感谢您使用智能打卡小程序。我们重视您的隐私和个人信息保护。
+
+一、我们收集的信息
+1. 微信授权信息：用于登录验证，包括您的微信OpenID、昵称和头像。
+2. 个人身份信息：真实姓名、身份证号（AES-256加密存储），用于实名认证。
+3. 人脸照片：用于打卡时的身份核验，照片数据加密存储。
+4. 位置信息：仅用于打卡时的地理位置校验，不会持续追踪您的位置。
+5. 手机号码：用于紧急联系和重要通知。
+
+二、信息使用目的
+- 实现考勤打卡、请假管理、花名册管理等核心功能
+- 通过微信订阅消息发送打卡提醒和审批通知
+
+三、信息安全
+- 身份证号采用AES-256算法加密存储
+- 所有数据传输使用HTTPS加密
+- 服务器部署在安全环境中
+
+四、信息存储
+- 您的个人信息将在您使用服务期间保存
+- 退出活动或注销账户后，相关数据将按法律规定处理
+
+五、您的权利
+- 您有权查看、更正您的个人信息
+- 您可以在设置中管理订阅消息授权
+- 如有疑问，请联系活动发起人
+
+点击"同意"即表示您已阅读并同意本隐私政策。
+        </text>
+      </scroll-view>
+      <view class="dialog-actions">
+        <view class="dialog-btn dialog-btn-cancel" bindtap="disagreePrivacy">不同意</view>
+        <view class="dialog-btn dialog-btn-confirm" bindtap="agreePrivacy">同意并继续</view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,12 @@
+<view class="container">
+  <nav-back />
+  <view class="card"><text class="sec-label">📝 请假信息</text>
+    <view class="fi"><text class="fl"><text class="rq">*</text>请假日期</text><view class="fr"><picker mode="date" value="{{startDate}}" bindchange="onStartDateChange"><view class="f-inp f-pick">{{startDate || '开始日期'}}</view></picker><text class="fs">—</text><picker mode="date" value="{{endDate}}" bindchange="onEndDateChange"><view class="f-inp f-pick">{{endDate || '结束日期'}}</view></picker></view></view>
+    <view class="fi"><text class="fl">去向地址</text><input class="f-inp" placeholder="请输入去向地址" value="{{destination}}" bindinput="onDestinationInput" /></view>
+    <view class="fi"><text class="fl">请假原因</text><textarea class="f-ta" placeholder="请输入请假原因（选填）" value="{{reason}}" bindinput="onReasonInput" /></view>
+    <view class="fi"><text class="fl"><text class="rq">*</text>紧急联系人</text><input class="f-inp" type="number" placeholder="请输入紧急联系人电话" value="{{emergencyContact}}" bindinput="onContactInput" /></view>
+    <view class="fi" wx:if="{{managers.length > 0}}"><text class="fl"><text class="rq">*</text>审批人</text><picker range="{{managers}}" range-key="name" bindchange="onApproverChange"><view class="f-inp f-pick">{{approverName || '请选择审批人'}}</view></picker></view>
+  </view>
+  <view style="padding:12rpx 0 32rpx;"><view class="sbtn" bindtap="submit"><text>提交申请</text></view></view>
+  <view class="safe-bottom"></view>
+</view>

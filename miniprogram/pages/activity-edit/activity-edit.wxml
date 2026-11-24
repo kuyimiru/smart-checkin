@@ -1,0 +1,25 @@
+<view class="container">
+  <nav-back />
+  <view class="card"><text class="sec-label">📋 基本信息</text>
+    <view class="fi"><text class="fl"><text class="rq">*</text>活动名称</text><input class="f-inp" placeholder="请输入活动名称" value="{{name}}" bindinput="onNameInput" /></view>
+    <view class="fr">
+      <view class="fi flex-1"><text class="fl"><text class="rq">*</text>开始日期</text><picker mode="date" value="{{startDate}}" bindchange="onStartDateChange"><view class="f-inp f-pick">{{startDate || '选择日期'}}</view></picker></view>
+      <text class="fs">—</text>
+      <view class="fi flex-1"><text class="fl">结束日期</text><picker mode="date" value="{{endDate}}" bindchange="onEndDateChange"><view class="f-inp f-pick">{{endDate || '选择日期'}}</view></picker></view>
+    </view>
+  </view>
+  <view class="card"><text class="sec-label">🕐 打卡规则</text>
+    <view class="fi"><text class="fl">打卡时间段</text><view class="fr"><picker mode="time" value="{{checkInStartTime}}" bindchange="onStartTimeChange"><view class="f-inp f-pick flex-1">{{checkInStartTime}}</view></picker><text class="fs">至</text><picker mode="time" value="{{checkInEndTime}}" bindchange="onEndTimeChange"><view class="f-inp f-pick flex-1">{{checkInEndTime}}</view></picker></view></view>
+    <view class="fi"><text class="fl">打卡频率</text><view class="ps"><view class="po {{frequencyType === 'daily' ? 'po-on' : ''}}" data-val="daily" bindtap="onFreqTap">每天</view><view class="po {{frequencyType === 'custom' ? 'po-on' : ''}}" data-val="custom" bindtap="onFreqTap">自定义星期</view></view></view>
+    <view wx:if="{{frequencyType === 'custom'}}" class="wc"><text wx:for="{{weekOptions}}" wx:key="value" class="wci {{frequencyDays.indexOf(item.value) > -1 ? 'wci-on' : ''}}" data-val="{{item.value}}" bindtap="onWeekToggle">{{item.label}}</text></view>
+  </view>
+  <view class="card"><text class="sec-label">✅ 打卡方式 <text style="font-size:20rpx;color:#999;font-weight:400;margin-left:8rpx;">不可修改</text></text>
+    <view class="tc"><view class="tci {{checkInType === 'location' ? 'tci-on' : ''}}"><text class="tci-e">📍</text><text class="tci-n">定位打卡</text></view><view class="tci {{checkInType === 'face' ? 'tci-on' : ''}}"><text class="tci-e">📷</text><text class="tci-n">人脸打卡</text></view><view class="tci {{checkInType === 'combo' ? 'tci-on' : ''}}"><text class="tci-e">🔐</text><text class="tci-n">组合打卡</text></view></view>
+    <view wx:if="{{checkInType === 'location' || checkInType === 'combo'}}" style="margin-top:20rpx;padding-top:20rpx;border-top:1rpx solid #f0f0f0;">
+      <view class="fi"><text class="fl">打卡地点</text><view class="lp" bindtap="chooseLocation"><text>📍</text><text class="lp-txt">{{locationLat ? '已选择打卡位置' : '点击选择打卡地点'}}</text><text class="lp-arr">›</text></view></view>
+      <view class="fi"><text class="fl">打卡半径（米）</text><input class="f-inp" type="number" value="{{locationRadius}}" bindinput="onRadiusChange" /></view>
+    </view>
+  </view>
+  <view style="padding:12rpx 0 32rpx;"><view class="sbtn" bindtap="submit"><text>保存修改</text></view></view>
+  <view class="safe-bottom"></view>
+</view>

@@ -1,0 +1,42 @@
+<view class="container">
+  <nav-back />
+  <view class="card"><text class="sec-label">📋 基本信息</text>
+    <view class="fi"><text class="fl"><text class="rq">*</text>活动名称</text><input class="f-inp" placeholder="请输入活动名称" value="{{name}}" bindinput="onNameInput" /></view>
+    <view class="fr">
+      <view class="fi flex-1"><text class="fl"><text class="rq">*</text>开始日期</text><picker mode="date" value="{{startDate}}" bindchange="onStartDateChange"><view class="f-inp f-pick">{{startDate || '选择日期'}}</view></picker></view>
+      <text class="fs">—</text>
+      <view class="fi flex-1"><text class="fl">结束日期</text><picker mode="date" value="{{endDate}}" bindchange="onEndDateChange"><view class="f-inp f-pick">{{endDate || '选择日期'}}</view></picker></view>
+    </view>
+  </view>
+  <view class="card"><text class="sec-label">🕐 打卡规则</text>
+    <view class="fi"><text class="fl">打卡时间段</text><view class="fr"><picker mode="time" value="{{checkInStartTime}}" bindchange="onStartTimeChange"><view class="f-inp f-pick flex-1">{{checkInStartTime}}</view></picker><text class="fs">至</text><picker mode="time" value="{{checkInEndTime}}" bindchange="onEndTimeChange"><view class="f-inp f-pick flex-1">{{checkInEndTime}}</view></picker></view></view>
+    <view class="fi"><text class="fl">打卡频率</text><view class="ps"><view class="po {{frequencyType === 'daily' ? 'po-on' : ''}}" data-val="daily" bindtap="onFreqTap">每天</view><view class="po {{frequencyType === 'custom' ? 'po-on' : ''}}" data-val="custom" bindtap="onFreqTap">自定义星期</view></view></view>
+    <view wx:if="{{frequencyType === 'custom'}}" class="wc"><text wx:for="{{weekOptions}}" wx:key="value" class="wci {{frequencyDays.indexOf(item.value) > -1 ? 'wci-on' : ''}}" data-val="{{item.value}}" bindtap="onWeekToggle">{{item.label}}</text></view>
+  </view>
+  <view class="card"><text class="sec-label">✅ 打卡方式</text>
+    <view class="tc"><view class="tci {{checkInType === 'location' ? 'tci-on' : ''}}" data-val="location" bindtap="onTypeTap"><text class="tci-e">📍</text><text class="tci-n">定位打卡</text></view><view class="tci {{checkInType === 'face' ? 'tci-on' : ''}}" data-val="face" bindtap="onTypeTap"><text class="tci-e">📷</text><text class="tci-n">人脸打卡</text></view><view class="tci {{checkInType === 'combo' ? 'tci-on' : ''}}" data-val="combo" bindtap="onTypeTap"><text class="tci-e">🔐</text><text class="tci-n">组合打卡</text></view></view>
+    <view wx:if="{{checkInType === 'location' || checkInType === 'combo'}}" style="margin-top:20rpx;padding-top:20rpx;border-top:1rpx solid #f0f0f0;">
+      <view class="fi"><text class="fl">打卡地点</text><view class="lp" bindtap="chooseLocation"><text>📍</text><text class="lp-txt">{{locationLat ? '已选择 (' + locationLat + ', ' + locationLng + ')' : '点击地图选择打卡地点'}}</text><text class="lp-arr">›</text></view></view>
+      <view class="fi" style="align-items:flex-start;">
+        <text class="fl">手动坐标</text>
+        <view style="flex:1;display:flex;flex-direction:column;gap:12rpx;">
+          <view style="display:flex;align-items:center;gap:10rpx;">
+            <text style="font-size:24rpx;color:#8888AA;width:56rpx;">纬度</text>
+            <input class="f-inp" style="flex:1;" type="digit" placeholder="如 39.9042" value="{{manualLat}}" bindinput="onManualLatInput" />
+          </view>
+          <view style="display:flex;align-items:center;gap:10rpx;">
+            <text style="font-size:24rpx;color:#8888AA;width:56rpx;">经度</text>
+            <input class="f-inp" style="flex:1;" type="digit" placeholder="如 116.4074" value="{{manualLng}}" bindinput="onManualLngInput" />
+          </view>
+          <text style="font-size:20rpx;color:#AAAACC;line-height:1.4;">地图选点不可用时，手动输入经纬度（模拟器「传感器」面板可复制坐标）</text>
+        </view>
+      </view>
+      <view class="fi"><text class="fl">打卡半径（米）</text><input class="f-inp" type="number" value="{{locationRadius}}" bindinput="onRadiusChange" /></view>
+    </view>
+  </view>
+  <view class="card"><view class="row-between" style="margin-bottom:16rpx;"><text class="sec-label" style="margin-bottom:0;">👤 活动负责人</text><text class="add-mgr" bindtap="addManager">+ 添加</text></view>
+    <view wx:for="{{managers}}" wx:key="idx" class="mb"><view class="row-between" style="margin-bottom:8rpx;"><text class="mn-text">负责人 {{index + 1}}</text><text wx:if="{{index > 0}}" class="m-rm" data-idx="{{index}}" bindtap="removeManager">移除</text></view><input class="f-inp" placeholder="姓名" value="{{item.name}}" data-idx="{{index}}" bindinput="onManagerNameInput" /><input class="f-inp" style="margin-top:10rpx;" type="number" placeholder="手机号码" value="{{item.phone}}" data-idx="{{index}}" bindinput="onManagerPhoneInput" /></view>
+  </view>
+  <view style="padding:12rpx 0 32rpx;"><view class="sbtn" bindtap="submit"><text>发布活动</text></view></view>
+  <view class="safe-bottom"></view>
+</view>

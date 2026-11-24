@@ -1,0 +1,11 @@
+<view
+  wx:if="{{visible}}"
+  class="nav-back"
+  style="top: {{top}}px;"
+  hover-class="nav-back--hover"
+  hover-stay-time="80"
+  bindtap="onTap"
+>
+  <view class="nav-back__arrow"></view>
+  <text class="nav-back__text">{{label}}</text>
+</view>

@@ -1,0 +1,58 @@
+<view class="container">
+  <nav-back />
+  <view class="hero-card">
+    <view class="hero-icon"><text class="hero-emoji">📋</text></view>
+    <text class="hero-name">{{activity.name}}</text>
+    <view class="hero-tags">
+      <text class="hero-tag">{{activity.checkInType === 'location' ? '📍 定位' : activity.checkInType === 'face' ? '📷 人脸' : '📍📷 组合'}}</text>
+      <text class="hero-tag {{activity.displayStatus === 'active' ? 'ht-active' : 'ht-closed'}}">{{activity.displayStatus === 'active' ? '进行中' : activity.displayStatus === 'pending' ? '未开始' : activity.displayStatus === 'closed' ? '已关闭' : '已结束'}}</text>
+    </view>
+    <view class="hero-meta">
+      <view class="hm-row"><text class="hm-l">周期</text><text class="hm-v">{{activity.startDate}} — {{activity.endDate}}</text></view>
+      <view class="hm-row"><text class="hm-l">打卡时间</text><text class="hm-v">{{activity.checkInStartTime}} - {{activity.checkInEndTime}}</text></view>
+      <view class="hm-row"><text class="hm-l">邀请码</text><text class="hm-v hm-code">{{activity.inviteCode}}</text></view>
+    </view>
+  </view>
+
+  <view class="quick-row">
+    <view class="quick-item {{btnState.disabled ? 'qi-dim' : ''}}" bindtap="goCheckIn">
+      <text class="qi-emoji">📍</text><text class="qi-label">{{btnState.shortText || '去打卡'}}</text>
+    </view>
+    <view class="quick-item" bindtap="goLeaveApply"><text class="qi-emoji">📝</text><text class="qi-label">请假</text></view>
+    <view class="quick-item" bindtap="leaveActivity"><text class="qi-emoji">🚪</text><text class="qi-label">退出</text></view>
+  </view>
+
+  <view class="card">
+    <text class="sec-label">今日打卡状态</text>
+    <view class="status-row">
+      <view wx:if="{{btnState.status === 'normal'}}" class="sp sp-ok"><view class="sp-dot sd-ok"></view><text>已打卡 · 正常 ✓</text></view>
+      <view wx:elif="{{btnState.status === 'late'}}" class="sp sp-late"><view class="sp-dot sd-late"></view><text>已打卡 · 迟到</text></view>
+      <view wx:elif="{{btnState.status === 'abnormal'}}" class="sp sp-bad"><view class="sp-dot sd-bad"></view><text>今日异常</text></view>
+      <view wx:elif="{{btnState.status === 'leave'}}" class="sp sp-gray"><view class="sp-dot sd-gray"></view><text>今日请假</text></view>
+      <view wx:elif="{{btnState.status === 'waiting'}}" class="sp sp-wait"><view class="sp-dot sd-blue"></view><text>等待打卡时间</text></view>
+      <view wx:else class="sp sp-ready"><view class="sp-dot sd-purple"></view><text>可以打卡</text></view>
+    </view>
+    <view class="big-btn {{btnState.disabled ? 'bb-dis' : 'bb-ok'}}" bindtap="goCheckIn">
+      <text>{{btnState.text}}</text><text wx:if="{{!btnState.disabled}}"> →</text>
+    </view>
+  </view>
+
+  <view wx:if="{{stats}}" class="card">
+    <text class="sec-label">我的打卡统计</text>
+    <view class="stat-row">
+      <view class="stat-item"><text class="si-num c-green">{{stats.normalCount || 0}}</text><text class="si-label">正常</text></view>
+      <view class="stat-item"><text class="si-num c-orange">{{stats.lateCount || 0}}</text><text class="si-label">迟到</text></view>
+      <view class="stat-item"><text class="si-num c-red">{{stats.abnormalCount || 0}}</text><text class="si-label">异常</text></view>
+      <view class="stat-item"><text class="si-num c-gray">{{stats.totalCount || 0}}</text><text class="si-label">总计</text></view>
+    </view>
+  </view>
+
+  <view class="card menu-card">
+    <view class="menu-row" bindtap="goCalendar"><text>📅 打卡日历</text><text class="m-arrow">›</text></view>
+    <view class="menu-sep"></view>
+    <view class="menu-row" bindtap="goCheckInHistory"><text>📋 打卡记录</text><text class="m-arrow">›</text></view>
+    <view class="menu-sep"></view>
+    <view class="menu-row" bindtap="goLeaveApply"><text>📝 请假申请</text><text class="m-arrow">›</text></view>
+  </view>
+  <view class="safe-bottom"></view>
+</view>

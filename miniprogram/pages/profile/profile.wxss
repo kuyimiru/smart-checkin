@@ -1,0 +1,52 @@
+/* ═══════════════════════════════════════════════
+   Profile — 我的
+   wxml 以内联样式为主，本页通过 page / .container 及其
+   结构选择器为渐变头卡、统计卡、菜单项补充质感与动效
+   ═══════════════════════════════════════════════ */
+
+/* 顶部渐变薄雾：与头卡渐变自然衔接 */
+page {
+  background-color: #F5F7FA;
+  background-image: linear-gradient(180deg, #E7ECFB 0%, #EFF3FB 300rpx, #F5F7FA 620rpx);
+  background-repeat: no-repeat;
+}
+
+.container {
+  padding: 32rpx 32rpx 0;
+  animation: fadeInUp 520ms cubic-bezier(0.25, 0.8, 0.25, 1) backwards;
+}
+
+/* ═══ 渐变个人资料头卡：柔和主色投影 + 高光，浮起来 ═══ */
+.container > view:first-child {
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 24rpx 56rpx rgba(102, 126, 234, 0.30),
+              0 4rpx 12rpx rgba(118, 75, 162, 0.18);
+}
+/* 右上角柔光，让纯色渐变有体积感 */
+.container > view:first-child::after {
+  content: '';
+  position: absolute;
+  top: -45%;
+  right: -18%;
+  width: 440rpx;
+  height: 440rpx;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0) 70%);
+  pointer-events: none;
+}
+
+/* ═══ 统计卡 / 菜单卡：统一 32rpx 圆角与柔和阴影 ═══ */
+.container > view:nth-child(2),
+.container > view:nth-child(3) {
+  border-radius: 32rpx !important;
+  box-shadow: 0 10rpx 30rpx rgba(26, 26, 46, 0.06) !important;
+}
+
+/* ═══ 菜单行：按压反馈（背景不在内联样式中，可直接覆盖） ═══ */
+.container > view:nth-child(3) > view {
+  transition: background 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.container > view:nth-child(3) > view:active {
+  background: #F4F6FC;
+}

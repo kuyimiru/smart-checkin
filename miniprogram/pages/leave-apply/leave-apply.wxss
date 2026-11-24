@@ -1,0 +1,22 @@
+/* ═══════════════════════════════════════════════
+   Leave Apply — 请假申请
+   表单体系（.fi/.fl/.f-inp/.f-ta/.sbtn）由 app.wxss 统一提供
+   ═══════════════════════════════════════════════ */
+
+page {
+  background-color: #F5F7FA;
+  background-image: linear-gradient(180deg, #E7ECFB 0%, #EFF3FB 280rpx, #F5F7FA 600rpx);
+  background-repeat: no-repeat;
+}
+
+.container { padding: 32rpx 32rpx 0; }
+.card { padding: 36rpx 32rpx; }
+
+/* 日期区间：中间连接符弱化，两侧对齐 */
+.fs { letter-spacing: 2rpx; opacity: 0.7; }
+
+/* 多行文本域：更大书写空间与聚焦反馈 */
+.f-ta { line-height: 1.6; }
+
+/* 审批人选择行：箭头提示可点 */
+.f-pick { min-width: 0; }

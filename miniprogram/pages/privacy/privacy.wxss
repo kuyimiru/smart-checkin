@@ -1,0 +1,106 @@
+.priv-page {
+  min-height: 100vh;
+  background: #F5F7FA;
+  padding-bottom: 40rpx;
+}
+
+.priv-hero {
+  padding: 56rpx 40rpx 48rpx;
+  background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+  border-radius: 0 0 40rpx 40rpx;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 28rpx;
+  box-shadow: 0 12rpx 32rpx rgba(102, 126, 234, 0.25);
+}
+
+.priv-hero-title {
+  font-size: 44rpx;
+  font-weight: 800;
+  color: #FFFFFF;
+  letter-spacing: 2rpx;
+  margin-bottom: 10rpx;
+}
+
+.priv-hero-sub {
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.priv-card {
+  margin: 0 28rpx 22rpx;
+  padding: 32rpx 30rpx;
+  background: #FFFFFF;
+  border-radius: 24rpx;
+  box-shadow: 0 4rpx 20rpx rgba(26, 26, 46, 0.05);
+}
+
+.priv-h {
+  display: block;
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #1A1A2E;
+  margin-bottom: 16rpx;
+}
+
+.priv-p {
+  display: block;
+  font-size: 26rpx;
+  line-height: 1.75;
+  color: #4A4A6A;
+}
+
+.priv-li {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 14rpx;
+}
+
+.priv-dot {
+  width: 10rpx;
+  height: 10rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667EEA, #764BA2);
+  margin: 16rpx 14rpx 0 0;
+  flex-shrink: 0;
+}
+
+.priv-t {
+  flex: 1;
+  font-size: 26rpx;
+  line-height: 1.75;
+  color: #4A4A6A;
+}
+
+.priv-actions {
+  padding: 20rpx 28rpx 0;
+}
+
+.priv-btn {
+  height: 92rpx;
+  border-radius: 46rpx;
+  background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10rpx 26rpx rgba(102, 126, 234, 0.35);
+  animation: privGlow 2.6s ease-in-out infinite;
+}
+
+.priv-btn text {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #FFFFFF;
+}
+
+@keyframes privGlow {
+  0%, 100% { box-shadow: 0 10rpx 26rpx rgba(102, 126, 234, 0.32); transform: translateY(0); }
+  50% { box-shadow: 0 16rpx 36rpx rgba(118, 75, 162, 0.42); transform: translateY(-3rpx); }
+}
+
+.priv-agreed {
+  text-align: center;
+  padding: 24rpx 0;
+  font-size: 24rpx;
+  color: #8888AA;
+}

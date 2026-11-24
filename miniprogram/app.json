@@ -1,0 +1,53 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/index/index",
+    "pages/activity-create/activity-create",
+    "pages/activity-detail/activity-detail",
+    "pages/activity-admin/activity-admin",
+    "pages/check-in/check-in",
+    "pages/leave-apply/leave-apply",
+    "pages/leave-approval/leave-approval",
+    "pages/calendar/calendar",
+    "pages/profile-edit/profile-edit",
+    "pages/profile/profile",
+    "pages/roster-import/roster-import",
+    "pages/activity-edit/activity-edit",
+    "pages/check-in-history/check-in-history",
+    "pages/privacy/privacy"
+  ],
+  "tabBar": {
+    "color": "#8888AA",
+    "selectedColor": "#667EEA",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的"
+      }
+    ]
+  },
+  "requiredPrivateInfos": ["getLocation", "chooseLocation"],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于打卡位置校验"
+    }
+  },
+  "window": {
+    "navigationBarBackgroundColor": "#667EEA",
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "智能打卡",
+    "backgroundColor": "#F5F7FA"
+  },
+  "usingComponents": {
+    "nav-back": "/components/nav-back/nav-back"
+  },
+  "lazyCodeLoading": "requiredComponents",
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

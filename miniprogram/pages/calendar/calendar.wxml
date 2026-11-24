@@ -1,0 +1,39 @@
+<view class="container">
+  <nav-back />
+  <view style="display:flex;align-items:center;justify-content:space-between;padding:12rpx 0 20rpx;">
+    <view bindtap="prevMonth" style="width:56rpx;height:56rpx;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2rpx 8rpx rgba(0,0,0,0.04);"><text style="font-size:32rpx;color:#667EEA;">‹</text></view>
+    <text style="font-size:32rpx;font-weight:700;color:#333;">{{year}}年{{month}}月</text>
+    <view bindtap="nextMonth" style="width:56rpx;height:56rpx;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 2rpx 8rpx rgba(0,0,0,0.04);"><text style="font-size:32rpx;color:#667EEA;">›</text></view>
+  </view>
+  <view style="display:flex;padding:6rpx 0;">
+    <text wx:for="{{weekDays}}" wx:key="*this" style="flex:1;text-align:center;font-size:24rpx;font-weight:600;color:#999;">{{item}}</text>
+  </view>
+  <view style="background:#fff;border-radius:18rpx;padding:14rpx 10rpx;box-shadow:0 2rpx 8rpx rgba(0,0,0,0.03);margin-bottom:18rpx;">
+    <view style="display:flex;flex-wrap:wrap;">
+      <view wx:for="{{days}}" wx:key="index" class="{{item.empty ? '' : 'dc'}} {{selectedDate === item.date ? 'dc-sel' : ''}}" data-date="{{item.date}}" data-status="{{item.status}}" bindtap="selectDay" style="width:calc(100%/7);aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;">
+        <text class="dn {{selectedDate === item.date ? 'dn-sel' : ''}}">{{item.day}}</text>
+        <view wx:if="{{item.status === 'normal'}}" style="width:7rpx;height:7rpx;border-radius:50%;background:#34C759;margin-top:4rpx;"></view>
+        <view wx:elif="{{item.status === 'late'}}" style="width:7rpx;height:7rpx;border-radius:50%;background:#FF9500;margin-top:4rpx;"></view>
+        <view wx:elif="{{item.status === 'abnormal'}}" style="width:7rpx;height:7rpx;border-radius:50%;background:#FF3B30;margin-top:4rpx;"></view>
+        <view wx:elif="{{item.status === 'leave'}}" style="width:7rpx;height:7rpx;border-radius:50%;background:#8E8E93;margin-top:4rpx;"></view>
+        <view wx:if="{{selectedDate === item.date}}" style="position:absolute;width:56rpx;height:56rpx;border-radius:50%;background:#667EEA;z-index:0;"></view>
+      </view>
+    </view>
+  </view>
+  <view style="display:flex;justify-content:center;gap:24rpx;margin-bottom:18rpx;">
+    <view style="display:flex;align-items:center;gap:6rpx;font-size:22rpx;color:#999;"><view style="width:9rpx;height:9rpx;border-radius:50%;background:#34C759;"></view>正常</view>
+    <view style="display:flex;align-items:center;gap:6rpx;font-size:22rpx;color:#999;"><view style="width:9rpx;height:9rpx;border-radius:50%;background:#FF9500;"></view>迟到</view>
+    <view style="display:flex;align-items:center;gap:6rpx;font-size:22rpx;color:#999;"><view style="width:9rpx;height:9rpx;border-radius:50%;background:#FF3B30;"></view>异常</view>
+    <view style="display:flex;align-items:center;gap:6rpx;font-size:22rpx;color:#999;"><view style="width:9rpx;height:9rpx;border-radius:50%;background:#8E8E93;"></view>请假</view>
+  </view>
+  <view wx:if="{{selectedDate}}" class="card">
+    <text style="font-size:26rpx;font-weight:700;color:#333;display:block;margin-bottom:14rpx;">{{selectedDate}}</text>
+    <view wx:if="{{selectedRecord}}">
+      <view class="dr"><text class="dl-t">打卡状态</text><text class="{{selectedRecord.status === 'normal' ? 'ds-ok' : selectedRecord.status === 'late' ? 'ds-late' : 'ds-bad'}}" style="font-size:20rpx;font-weight:600;padding:3rpx 12rpx;border-radius:12rpx;">{{selectedRecord.status === 'normal' ? '正常打卡' : selectedRecord.status === 'late' ? '迟到补签' : '异常'}}</text></view>
+      <view wx:if="{{selectedRecord.checkInTime}}" class="dr"><text class="dl-t">打卡时间</text><text style="font-size:24rpx;color:#555;">{{selectedRecord.checkInTime}}</text></view>
+      <view wx:if="{{selectedRecord.locationLat}}" class="dr"><text class="dl-t">打卡位置</text><text style="font-size:24rpx;color:#555;">{{selectedRecord.locationLat}}, {{selectedRecord.locationLng}}</text></view>
+    </view>
+    <view wx:else style="text-align:center;padding:14rpx 0;color:#ccc;">未打卡</view>
+  </view>
+  <view class="safe-bottom"></view>
+</view>

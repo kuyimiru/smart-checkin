@@ -1,0 +1,59 @@
+/* ═══════════════════════════════════════════════
+   Index — 首页 · 活动列表
+   （wxml 大量使用内联样式，本页通过 page / .container /
+     .card / .empty-* 等既有 class 提供视觉升级）
+   ═══════════════════════════════════════════════ */
+
+/* 顶部渐变薄雾：让白色卡片"浮"在浅色渐变之上 */
+page {
+  background-color: #F5F7FA;
+  background-image: linear-gradient(180deg, #E7ECFB 0%, #EFF3FB 280rpx, #F5F7FA 600rpx);
+  background-repeat: no-repeat;
+}
+
+.container { padding: 32rpx 32rpx 0; }
+
+/* ═══ 活动卡片 ═══ */
+.card {
+  border-radius: 32rpx;
+  transition: transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card:active {
+  transform: scale(0.985);
+  box-shadow: 0 6rpx 18rpx rgba(26, 26, 46, 0.06);
+}
+
+/* 卡片左侧色条柔光（色条为 card 的第一个子元素，内联提供渐变） */
+.card > view:first-child {
+  box-shadow: 0 0 18rpx rgba(102, 126, 234, 0.45);
+  border-radius: 0 6rpx 6rpx 0;
+}
+
+/* ═══ 空状态 ═══ */
+.empty-state { padding: 140rpx 40rpx; }
+.empty-emoji { margin-bottom: 6rpx; }
+
+/* ═══ 加入活动弹窗 ═══ */
+.dialog-card { padding: 48rpx 32rpx 28rpx; }
+/* 顶部渐变抓取条，替代生硬边框 */
+.dialog-card::before {
+  content: '';
+  position: absolute;
+  top: 16rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 96rpx;
+  height: 8rpx;
+  border-radius: 999rpx;
+  background-image: linear-gradient(90deg, #667EEA 0%, #764BA2 100%);
+  opacity: 0.85;
+}
+.dialog-title { margin-bottom: 22rpx; }
+
+/* 弹窗内邀请码输入框：内联样式之外的聚焦光晕与描边 */
+.dialog-card input {
+  transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1),
+              background 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: inset 0 0 0 2rpx rgba(102, 126, 234, 0.12);
+}

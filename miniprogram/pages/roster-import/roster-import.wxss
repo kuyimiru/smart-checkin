@@ -1,0 +1,42 @@
+/* ═══════════════════════════════════════════════
+   Roster Import — 花名册导入
+   依赖 app.wxss 的 .card / .row-between / 表单体系
+   ═══════════════════════════════════════════════ */
+
+page {
+  background-color: #F5F7FA;
+  background-image: linear-gradient(180deg, #E7ECFB 0%, #EFF3FB 260rpx, #F5F7FA 560rpx);
+  background-repeat: no-repeat;
+}
+
+.container { padding: 32rpx 32rpx 0; }
+
+/* ═══ 上传区（既有的第一张 card）：虚线改为品牌色虚线 + 渐变底 ═══ */
+.card:first-child {
+  background-color: #FFFFFF;
+  background-image: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.05) 100%);
+  border: 2rpx dashed rgba(102, 126, 234, 0.40) !important;
+  box-shadow: 0 12rpx 32rpx rgba(102, 126, 234, 0.12);
+  transition: transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card:first-child:active {
+  transform: scale(0.985);
+  border-color: rgba(102, 126, 234, 0.65) !important;
+  box-shadow: 0 6rpx 18rpx rgba(102, 126, 234, 0.16);
+}
+
+/* ═══ 花名册列表：逐行入场，形成瀑布感 ═══ */
+.card:nth-child(2) > view {
+  animation: fadeInUp 320ms cubic-bezier(0.25, 0.8, 0.25, 1) backwards;
+}
+.card:nth-child(2) > view:nth-child(2) { animation-delay: 60ms; }
+.card:nth-child(2) > view:nth-child(3) { animation-delay: 110ms; }
+.card:nth-child(2) > view:nth-child(4) { animation-delay: 160ms; }
+.card:nth-child(2) > view:nth-child(5) { animation-delay: 210ms; }
+.card:nth-child(2) > view:nth-child(6) { animation-delay: 260ms; }
+.card:nth-child(2) > view:nth-child(7) { animation-delay: 310ms; }
+
+/* 行尾分隔线用极浅色，避免"重边框"观感 */
+.card:nth-child(2) > view { transition: background 300ms cubic-bezier(0.4, 0, 0.2, 1); }

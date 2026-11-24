@@ -1,0 +1,25 @@
+<view class="container">
+  <view style="display:flex;flex-direction:column;align-items:center;padding:24rpx 0 28rpx;">
+    <view style="position:relative;margin-bottom:14rpx;">
+      <view bindtap="takePhoto" style="width:160rpx;height:160rpx;border-radius:50%;overflow:hidden;background:rgba(102,126,234,0.06);border:3rpx solid rgba(102,126,234,0.15);">
+        <image wx:if="{{faceImagePreview}}" src="{{faceImagePreview}}" mode="aspectFill" style="width:100%;height:100%;" />
+        <view wx:else style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;"><text style="font-size:52rpx;">📷</text></view>
+      </view>
+      <view style="position:absolute;bottom:4rpx;right:4rpx;width:44rpx;height:44rpx;border-radius:50%;background:linear-gradient(135deg,#34C759,#30D158);display:flex;align-items:center;justify-content:center;border:2rpx solid #fff;box-shadow:0 2rpx 8rpx rgba(52,199,89,0.2);"><text style="font-size:22rpx;color:#fff;font-weight:700;">+</text></view>
+    </view>
+    <text style="font-size:22rpx;color:#999;">点击拍摄正面人脸照片</text>
+  </view>
+  <view class="card">
+    <view class="fi"><text class="fl"><text class="rq">*</text>真实姓名</text><input class="f-inp" placeholder="请输入真实姓名" value="{{realName}}" bindinput="onNameInput" /></view>
+    <view class="fi"><text class="fl">性别</text><picker range="{{genderOptions}}" value="{{genderIndex}}" bindchange="onGenderChange"><view class="f-inp f-pick">{{gender || '请选择性别（用于花名册匹配）'}}</view></picker></view>
+    <view class="fi"><text class="fl"><text class="rq" wx:if="{{!idCardLocked}}">*</text>身份证号</text>
+      <input wx:if="{{!idCardLocked}}" class="f-inp" type="idcard" placeholder="请输入18位身份证号" maxlength="18" value="{{idCard}}" bindinput="onIdCardInput" />
+      <view wx:else class="f-inp f-locked"><text>{{maskedIdCard}}</text><text class="f-lock-tip">已实名，不可修改</text></view>
+    </view>
+    <view class="fi" style="margin-bottom:0;"><text class="fl">手机号</text><input class="f-inp" type="number" placeholder="请输入手机号（选填）" maxlength="11" value="{{phone}}" bindinput="onPhoneInput" /></view>
+  </view>
+  <view style="padding:12rpx 0 32rpx;"><view class="sbtn" bindtap="submit"><text>保存资料</text></view></view>
+  <view class="safe-bottom"></view>
+  <!-- 放在末尾：本页 .container > view:first-child 有入场动画，避免影响返回键定位 -->
+  <nav-back />
+</view>

@@ -1,0 +1,33 @@
+/* ═══════════════════════════════════════════════
+   Profile Edit — 资料设置
+   表单体系（.fi/.fl/.f-inp/.sbtn）统一由 app.wxss 提供
+   ═══════════════════════════════════════════════ */
+
+page {
+  background-color: #F5F7FA;
+  background-image: linear-gradient(180deg, #E7ECFB 0%, #EFF3FB 260rpx, #F5F7FA 560rpx);
+  background-repeat: no-repeat;
+}
+
+.container { padding: 32rpx 32rpx 0; }
+
+/* ═══ 头像区：渐变描边光环 + 主色柔光 ═══ */
+.container > view:first-child {
+  animation: fadeInUp 460ms cubic-bezier(0.25, 0.8, 0.25, 1) backwards;
+}
+.container > view:first-child > view:first-child > view:first-child {
+  border: 4rpx solid rgba(255, 255, 255, 0.95) !important;
+  box-shadow: 0 0 0 5rpx rgba(102, 126, 234, 0.26),
+              0 18rpx 40rpx rgba(102, 126, 234, 0.20),
+              0 0 0 1rpx rgba(118, 75, 162, 0.10);
+  transition: transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.container > view:first-child > view:first-child > view:first-child:active {
+  transform: scale(0.96);
+  box-shadow: 0 0 0 8rpx rgba(102, 126, 234, 0.18),
+              0 10rpx 24rpx rgba(102, 126, 234, 0.16);
+}
+
+/* ═══ 表单卡片：更大留白 ═══ */
+.card { padding: 36rpx 32rpx; }
